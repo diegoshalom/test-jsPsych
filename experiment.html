@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>My experiment</title>
+        <script src="jspsych-6.0.5/jspsych.js"></script>
+        <script src="jspsych-6.0.5/plugins/jspsych-html-keyboard-response.js"></script>
+        <script src="jspsych-6.0.5/plugins/jspsych-image-button-response.js"></script>
+        <script src="jspsych-6.0.5/plugins/jspsych-survey-likert.js"></script>
+        <script src="jspsych-6.0.5/plugins/jspsych-survey-multi-choice.js"></script>        
+        <link href="jspsych-6.0.5/css/jspsych.css" rel="stylesheet" type="text/css"></link>
+        <meta charset="utf-8"> 
+    </head>
+    <body></body>
+    <script>
+
+    /* create timeline */
+    var timeline = [];
+
+    var hello_trial = {
+        type: 'html-keyboard-response',
+        stimulus: 'Hello world! á é í ó ú ü'
+    };
+    timeline.push(hello_trial);
+
+    var trial = {
+        type: 'image-button-response',
+        stimulus: 'img/happy_face.png',
+        //choices: ['Happy', 'Sad'],
+        choices: ['1', '2', '3', '4', '5', '6', '7'],
+        prompt: '¿Cuán feliz está?'
+    };
+    timeline.push(trial); 
+
+    var scale_1 = ["Strongly Disagree", "Disagree", "Neutral", "Agree", "Strongly Agree"];
+
+    var likert_page = {
+        type: 'survey-likert',
+        questions: [{prompt: "I like vegetables.", labels: scale_1}],
+    };
+    timeline.push(likert_page); 
+
+    // defining groups of questions that will go together.
+    var page_1_questions = ["I like vegetables.", "I like fruit."];
+
+    // definiting two different response scales that can be used.
+    var page_1_options = ["Strongly Disagree", "Disagree", "Neutral", "Agree", "Strongly Agree"];
+    var page_2_options = ["Strongly Disagree", "Disagree", "Somewhat Disagree", "Neural", "Somewhat Agree", "Agree", "Strongly Agree"];
+
+    var multi_choice_block = {
+      type: 'survey-multi-choice',
+      questions: [{prompt: "I like vegetables", options: page_1_options, required:true,}, {prompt: "I like fruit", options: page_2_options, required: false}],
+    };
+    timeline.push(multi_choice_block); 
+
+    var multi_choice_block_horizontal = {
+      type: 'survey-multi-choice',
+      questions: [{prompt: "I like vegetables", options: page_1_options, required: true, horizontal: true,}, {prompt: "I like fruit", options: page_2_options, required: false, horizontal: true}],
+    };
+    timeline.push(multi_choice_block_horizontal); 
+
+
+    jsPsych.init({
+        timeline: timeline,
+        on_finish: function() {
+            jsPsych.data.displayData();
+        },
+    })
+    </script>
+</html>
